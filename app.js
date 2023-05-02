@@ -6,6 +6,8 @@ const cors = require('cors')
 const path = require('path');
 const lenderRoutes = require('./routes/lender')
 const bikeRoutes = require('./routes/bike')
+const userRoutes = require('./routes/user')
+
 
 
 const port = process.env.PORT || 3000
@@ -18,6 +20,8 @@ app.use('/uploads', express.static(path.join('uploads')));
 
 app.use('/lender',  lenderRoutes)
 app.use('/bike'  ,  bikeRoutes)
+app.use('/user'  ,  userRoutes)
+
 
 dbConn();
 app.listen(port,()=>{
