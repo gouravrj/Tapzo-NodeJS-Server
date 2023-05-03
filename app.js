@@ -7,6 +7,7 @@ const path = require('path');
 const lenderRoutes = require('./routes/lender')
 const bikeRoutes = require('./routes/bike')
 const userRoutes = require('./routes/user')
+const historyRoutes = require('./routes/history')
 
 
 
@@ -21,6 +22,7 @@ app.use('/uploads', express.static(path.join('uploads')));
 app.use('/lender',  lenderRoutes)
 app.use('/bike'  ,  bikeRoutes)
 app.use('/user'  ,  userRoutes)
+app.use('/history', historyRoutes)
 
 
 dbConn();
