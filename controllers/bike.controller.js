@@ -42,6 +42,31 @@ exports.getbyID =  async (req,res,next)=>{
     }
 }
 
+exports.decrementAvaibility = async(req,res,next) => {
+    const id = req.params.id;
+    try{
+        const temp = await Bike.findById(id)
+        avb = temp.avaibility
+        avb = avb-1;
+        const updatedPost = await Bike.findByIdAndUpdate(id,{avaibility:avb})
+        if(updatedPost==null){
+            res.status(400).json({
+                message:"Bike didn't Updated Successfully/ID Not Found"
+            })
+        }else{
+            res.status(200).json({
+                message:"Bike Updated Successfully",
+                updatedPost:updatedPost
+            })
+            }
+    }catch(err){
+        res.status(500).json({
+            message:"Something Went Wrong",
+            error:err
+        })
+    }
+}
+
 exports.createBike = async(req,res,next)=>{
     const path = "http://localhost:3000/uploads/"+req.file.filename
     const bikeObj = {

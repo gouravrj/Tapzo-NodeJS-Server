@@ -1,4 +1,8 @@
 const History = require('../Models/History')
+const Bike = require('../Models/Bike')
+const Lender = require('../Models/Lender')
+const User = require('../Models/User')
+
 
 exports.register = async(req,res,next) => {
     const historyObj = {
@@ -57,4 +61,53 @@ exports.update = async(req,res,next) => {
             error:err
         })
     }
+}
+
+
+exports.getHistoryByUser = async(req,res) =>{
+    
+    var ans=[]
+    const userId = req.params.id
+    try{ 
+        let histories = await History.find({userId:userId}).populate('userId')
+        // console.log(histories)
+        if(!histories)
+            histories=[]
+        
+        for(let i=0;i<histories.length;i++)
+        {
+            
+            bike = await Bike.findById(histories[i].bikeId)
+            lender = await Lender.findById(histories[i].lenderId)
+            user = await User.findById(histories[i].userId._id)
+  
+    
+            const temp = {
+                days:histories[i].days,
+                totalcost:histories[i].totalCost,
+                iscompleted:histories[i].isCompleted,
+                date:histories[i].date,
+                bikeimg:bike.bikeImgUrl,
+                bikeprice:bike.priceDay,
+                bikename:bike.bikeName,
+                lendername:lender.displayName,
+                lenderphone:lender.phone,
+                username:user.name,
+                userphone:user.userphone
+            }
+            ans.push(temp)
+            
+        }
+        res.status(200).json({
+            message:"Histories Fetched Successfully",
+            historyData: ans
+        })
+
+    }catch(err){
+        res.status(200).json({
+            message:"Something went Wrong ",
+            error:err
+        })
+    }
+    
 }

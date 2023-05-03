@@ -24,4 +24,6 @@ routes.put('/updatebyID/:id' ,auth, bikeController.updateBike)
 routes.delete('/deletebyID/:id',auth, bikeController.deleteBike) 
 routes.get('/:lenderid',auth, bikeController.getBikeByLender) 
 
+routes.put('/avb/:id',bikeController.decrementAvaibility)
+
 module.exports = routes;
