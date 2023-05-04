@@ -83,6 +83,8 @@ exports.getHistoryByUser = async(req,res) =>{
   
     
             const temp = {
+                historyid:histories[i]._id,
+                bikeID:bike._id,
                 days:histories[i].days,
                 totalcost:histories[i].totalCost,
                 iscompleted:histories[i].isCompleted,
@@ -93,7 +95,8 @@ exports.getHistoryByUser = async(req,res) =>{
                 lendername:lender.displayName,
                 lenderphone:lender.phone,
                 username:user.name,
-                userphone:user.userphone
+                userphone:user.userphone,
+                bikedesc:bike.bikeDesc
             }
             ans.push(temp)
             
@@ -128,8 +131,7 @@ exports.getHistoryByLender = async(req,res) =>{
             bike = await Bike.findById(histories[i].bikeId)
             lender = await Lender.findById(histories[i].lenderId)
             user = await User.findById(histories[i].userId._id)
-  
-    
+
             const temp = {
                 historyid:histories[i]._id,
                 bikeID:bike._id,
@@ -143,7 +145,8 @@ exports.getHistoryByLender = async(req,res) =>{
                 lendername:lender.displayName,
                 lenderphone:lender.phone,
                 username:user.name,
-                userphone:user.userphone
+                userphone:user.userphone,
+                bikedesc:bike.bikeDesc
             }
             ans.push(temp)
             
