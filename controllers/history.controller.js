@@ -111,3 +111,74 @@ exports.getHistoryByUser = async(req,res) =>{
     }
     
 }
+
+exports.getHistoryByLender = async(req,res) =>{
+    
+    var ans=[]
+    const lenderId = req.params.id
+    try{ 
+        let histories = await History.find({lenderId:lenderId}).populate('lenderId')
+        // console.log(histories)
+        if(!histories)
+            histories=[]
+        
+        for(let i=0;i<histories.length;i++)
+        {
+            
+            bike = await Bike.findById(histories[i].bikeId)
+            lender = await Lender.findById(histories[i].lenderId)
+            user = await User.findById(histories[i].userId._id)
+  
+    
+            const temp = {
+                historyid:histories[i]._id,
+                bikeID:bike._id,
+                days:histories[i].days,
+                totalcost:histories[i].totalCost,
+                iscompleted:histories[i].isCompleted,
+                date:histories[i].date,
+                bikeimg:bike.bikeImgUrl,
+                bikeprice:bike.priceDay,
+                bikename:bike.bikeName,
+                lendername:lender.displayName,
+                lenderphone:lender.phone,
+                username:user.name,
+                userphone:user.userphone
+            }
+            ans.push(temp)
+            
+        }
+        res.status(200).json({
+            message:"Histories Fetched Successfully",
+            historyData: ans
+        })
+
+    }catch(err){
+        res.status(200).json({
+            message:"Something went Wrong ",
+            error:err
+        })
+    }
+}
+
+exports.completedStatusToTrue = async(req,res,next) => {
+    const id = req.params.id;
+    try{
+        const updatedPost = await History.findByIdAndUpdate(id,{isCompleted:true})
+        if(updatedPost==null){
+            res.status(400).json({
+                message:"History didn't Updated Successfully/ID Not Found"
+            })
+        }else{
+            res.status(200).json({
+                message:"History Updated Successfully",
+                updatedPost:updatedPost
+            })
+            }
+    }catch(err){
+        res.status(500).json({
+            message:"Something Went Wrong",
+            error:err
+        })
+    }
+}

@@ -25,5 +25,7 @@ routes.delete('/deletebyID/:id',auth, bikeController.deleteBike)
 routes.get('/:lenderid',auth, bikeController.getBikeByLender) 
 
 routes.put('/avb/:id',bikeController.decrementAvaibility)
+routes.put('/avbplus/:id',bikeController.incrementAvaibility)
+
 
 module.exports = routes;
