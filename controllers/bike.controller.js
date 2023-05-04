@@ -99,7 +99,7 @@ exports.incrementAvaibility = async(req,res,next) => {
 }
 
 exports.createBike = async(req,res,next)=>{
-    const path = "http://localhost:3000/uploads/"+req.file.filename
+    const path = "https://tapzo-nodejs-server-production.up.railway.app/uploads/"+req.file.filename
     const bikeObj = {
 
         lenderId: req.body.lid,
